@@ -36,11 +36,5 @@ void read_file(char* file_name) {
         printf("%s", content);
     }
 
-    /*  
-        r1 = 10
-        mov eax, 10
-    */
-
- 
     fclose(program_file);
 }
