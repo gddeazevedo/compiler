@@ -15,22 +15,16 @@ void read_file(char* file_name) {
 
         if (str[0] == 'i') {
             parse_if();
-            printf("IF\n");
         } else if (str[1] == 'l') {
             parse_else();
-            printf("ELSE\n");
         } else if (str[0] == 'w') {
             parse_while();
-            printf("WHILE\n");
         } else if (str[0] == 'r') {
             parse_assignment(str);
-            printf("Assignment\n");
         } else if (str[0] == 'p') {
             parse_print();
-            printf("PRINT\n");
         } else if (str[0] == 's') {
             parse_scan();
-            printf("SCAN\n");
         }
     }
 
