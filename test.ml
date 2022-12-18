@@ -1,5 +1,6 @@
 scan r9
 print r9
+r1 = 0
 
 if r9 != 3
     r1 = 3
