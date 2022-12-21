@@ -1,5 +1,8 @@
 #include "helpers.h"
 
+/*
+* remove os espaços do início e do final da string
+*/
 char* trim(char* string) {
     char* newString = strdup(string);
 
@@ -18,7 +21,7 @@ char* trim(char* string) {
     return newString;
 }
 
-int get_number_from_string(char* str) {
+int get_number_from_string(char* str) { 
     char* ptr = str;
     int counter = 0;
 
