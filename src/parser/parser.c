@@ -5,7 +5,7 @@ void start_compilation(char* file_name) {
     read_file(file_name);
 }
 
-static void init_assembly_file() {
+static void init_assembly_file() {  //cria o arquivo de saída em assembly
     FILE* file = fopen("program.asm", "w");
 
     if (file == NULL) {
@@ -27,7 +27,7 @@ static void init_assembly_file() {
     fclose(file);
 }
 
-static void read_file(char* file_name) {
+static void read_file(char* file_name) { //recebe linha por linha do arquivo e começa a leitura
     FILE* program_file = fopen(file_name, "r");
     char content[256];
 
@@ -43,7 +43,7 @@ static void read_file(char* file_name) {
     fclose(program_file);
 }
 
-static void parse_line(char* line) {
+static void parse_line(char* line) { //compara as linhas do documento recebido através do regex
     regex_t regex_scan,
         regex_print,
         regex_atr,
@@ -62,7 +62,7 @@ static void parse_line(char* line) {
     int error_endif = regcomp(&regex_endif, ENDIF, 0);
     int error_endwhile = regcomp(&regex_endwhile, ENDWHILE, 0);
 
-    int error = error_scan || error_print ||
+    int error = error_scan || error_print ||    //se o regcomp for verdadeiro, dá erro de compilação
         error_atr || error_while ||
         error_if || error_else || 
         error_endif || error_endwhile;
@@ -72,7 +72,7 @@ static void parse_line(char* line) {
         exit(1);
     }
 
-    FILE* file = fopen("program.asm", "a+");
+    FILE* file = fopen("program.asm", "a+");    //printa no arquivo a tradução
 
     if (!regexec(&regex_scan, line, 0, NULL, 0)) {
         parse_scan(file);
@@ -95,6 +95,8 @@ static void parse_line(char* line) {
     fclose(file);
 }
 
+/********************************* Scan *********************************************/
+
 static void parse_scan(FILE* file) {
     fputs("\tmov ebx, r\n", file);
     fputs("\tpusha\n", file);
@@ -104,6 +106,8 @@ static void parse_scan(FILE* file) {
     fputs("\tpopa\n", file);
     fputs("\tadd esp, 8\n", file);
 }
+
+/********************************* Print *********************************************/
 
 static void parse_print(FILE* file) {
     fputs("\tmov ebx, r\n", file);
@@ -115,6 +119,8 @@ static void parse_print(FILE* file) {
     fputs("\tadd esp, 8\n", file);
 }
 
+/****************************** Atribuição ******************************************/
+
 static void parse_assignment(FILE* file, char* line) {
     char str[50];
     int value = get_number_from_string(line);
@@ -125,21 +131,31 @@ static void parse_assignment(FILE* file, char* line) {
     fputs("\tmov dword [edx + 4 * esi], eax\n", file);
 }
 
+/******************************** While ********************************************/
+
 static void parse_while(FILE* file) {
     fputs("\tWHILE:\n", file);
 }
+
+/********************************* If *********************************************/
 
 static void parse_if(FILE* file) {
     fputs("\tIF:\n", file);
 }
 
+/********************************* Else *********************************************/
+
 static void parse_else(FILE* file) {
     fputs("\tELSE:\n", file);
 }
 
+/********************************* Endif *********************************************/
+
 static void parse_endif(FILE* file) {
     fputs("\tENDIF:\n", file);
 }
+
+/********************************* Endwhile *********************************************/
 
 static void parse_endwhile(FILE* file) {
     fputs("\tjmp WHILE\n", file);

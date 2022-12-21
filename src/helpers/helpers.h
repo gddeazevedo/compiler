@@ -6,6 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 
+/********************************* Funções *********************************************/
 
 char* trim(char* string);
 int get_number_from_string(char* str);

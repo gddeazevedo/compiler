@@ -17,10 +17,14 @@
 
 static int r[32];
 
+/********************************* Funções *********************************************/
+
 void start_compilation(char* file_name);
 static void parse_line(char* line);
 static void read_file(char* file_name);
 static void init_assembly_file();
+
+// -> Traduções:
 
 static void parse_scan(FILE* file);
 static void parse_print(FILE* file);
