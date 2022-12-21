@@ -9,7 +9,7 @@ static void init_assembly_file() {  //cria o arquivo de saída em assembly
     FILE* file = fopen("program.asm", "w");
 
     if (file == NULL) {
-        fprintf(stderr, "Error in opening file!\n");
+        fprintf(stderr, "File does not exist!\n");
         exit(1);
     }
 

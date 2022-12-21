@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
-    start_compilation(argv[1]);
+    start_compilation(argv[1]); //o argumento que estamos recebendo é o ./<nome do arquivo>
 
     return 0;
 }
