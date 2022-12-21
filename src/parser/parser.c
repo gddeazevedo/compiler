@@ -17,7 +17,7 @@ static void init_assembly_file() {
         "section .data\n\tformat: db \"%d\", 0\n",
         "section .bss\n\tr: resd 32\n",
         "section .text\n\textern printf\n\textern scanf\n\tglobal main\n",
-        "main:\n"
+        "\nmain:\n"
     };
 
     for (int i = 0; i < 4; i++) { 
@@ -75,80 +75,73 @@ static void parse_line(char* line) {
     FILE* file = fopen("program.asm", "a+");
 
     if (!regexec(&regex_scan, line, 0, NULL, 0)) {
-        printf("scan\n");
         parse_scan(file);
-        fclose(file);
     } else if (!regexec(&regex_print, line, 0, NULL, 0)) {
-        printf("print\n");
         parse_print(file);
-        fclose(file);
     } else if (!regexec(&regex_atr, line, 0, NULL, 0)) {
-        printf("atribuição\n");
-        parse_assignment(file);
-        fclose(file);
+        parse_assignment(file, line);
     } else if (!regexec(&regex_while, line, 0, NULL, 0)) {
-        printf("while\n");
         parse_while(file);
-        fclose(file);
     } else if (!regexec(&regex_if, line, 0, NULL, 0)) {
-        printf("if\n");
         parse_if(file);
-        fclose(file);
     } else if (!regexec(&regex_else, line, 0, NULL, 0)) {
-        printf("else\n");
         parse_else(file);
-        fclose(file);
     } else if (!regexec(&regex_endif, line, 0, NULL, 0)) {
-        printf("endif\n");
         parse_endif(file);
-        fclose(file);
     } else if (!regexec(&regex_endwhile, line, 0, NULL, 0)) {
-        printf("endwhile\n");
         parse_endwhile(file);
-        fclose(file);
     }
+
+    fclose(file);
 }
 
 static void parse_scan(FILE* file) {
-    fputs("mov ebx, r\n", file);
-    fputs("pusha\n", file);
-    fputs("push ebx\n", file);
-    fputs("push format\n", file);
-    fputs("call scanf\n", file);
-    fputs("popa\n", file);
-    fputs("add esp, 8\n", file);
+    fputs("\tmov ebx, r\n", file);
+    fputs("\tpusha\n", file);
+    fputs("\tpush ebx\n", file);
+    fputs("\tpush format\n", file);
+    fputs("\tcall scanf\n", file);
+    fputs("\tpopa\n", file);
+    fputs("\tadd esp, 8\n", file);
 }
 
 static void parse_print(FILE* file) {
-    fputs("mov ebx, r\n", file);
-    fputs("pusha\n", file);
-    fputs("push ebx\n", file);
-    fputs("push format\n", file);
-    fputs("call printf\n", file);
-    fputs("popa\n", file);
-    fputs("add esp, 8\n", file);
+    fputs("\tmov ebx, r\n", file);
+    fputs("\tpusha\n", file);
+    fputs("\tpush ebx\n", file);
+    fputs("\tpush format\n", file);
+    fputs("\tcall printf\n", file);
+    fputs("\tpopa\n", file);
+    fputs("\tadd esp, 8\n", file);
 }
 
-static void parse_assignment(FILE* file) {
-
+static void parse_assignment(FILE* file, char* line) {
+    char str[50];
+    int value = get_number_from_string(line);
+    fputs("\tmov esi, 0\n", file);
+    sprintf(str, "\tmov eax, %d\n", value);
+    fputs(str, file);
+    fputs("\tmov edx, r\n", file);
+    fputs("\tmov dword [edx + 4 * esi], eax\n", file);
 }
 
 static void parse_while(FILE* file) {
-
+    fputs("\tWHILE:\n", file);
 }
 
 static void parse_if(FILE* file) {
-
+    fputs("\tIF:\n", file);
 }
 
 static void parse_else(FILE* file) {
-
+    fputs("\tELSE:\n", file);
 }
 
 static void parse_endif(FILE* file) {
-
+    fputs("\tENDIF:\n", file);
 }
 
 static void parse_endwhile(FILE* file) {
-    
+    fputs("\tjmp WHILE\n", file);
+    fputs("\tENDWHILE:\n", file);
 }

@@ -8,6 +8,6 @@
 
 
 char* trim(char* string);
-
+int get_number_from_string(char* str);
 
 #endif

@@ -17,3 +17,22 @@ char* trim(char* string) {
 
     return newString;
 }
+
+int get_number_from_string(char* str) {
+    char* ptr = str;
+    int counter = 0;
+
+    while (*ptr) {
+        if (isdigit(*ptr)) {
+            int val = (int)strtol(ptr,&ptr, 10);
+            counter++;
+            
+            if (counter == 2) {
+                return val;
+            }
+
+        } else {
+            ptr++;
+        }
+    }
+}
