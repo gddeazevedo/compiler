@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 
-void write_assembly();
-void read_file(char* file_name);
+char* trim(char* string);
 
 
 #endif
